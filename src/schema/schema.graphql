@@ -1,16 +1,33 @@
-input PersonInput {
-  id: Int
-  email: String
-  name: String
+input CreateUserInput {
+  fullName: String!
+  image: String
+  username: String!
 }
 
-type Person {
-  id: Int
-  email: String
-  name: String
+input UpdateUserInput {
+  id: String!
+  fullName: String!
+  image: String
+}
+
+type User {
+  id: String!
+  fullName: String!
+  image: String
+  username: String!
+}
+
+type ActionResponse {
+  success: Boolean!
 }
 
 type Query {
-  helloWorld: String
-  getPerson: Person
+  users: [User]
+  user(username: String!): User
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput): User
+  updateUser(updateUserInput: UpdateUserInput): User
+  deleteUser(id: String!): ActionResponse
 }

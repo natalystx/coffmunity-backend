@@ -1,9 +1,9 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { ConfigService, ConfigModule } from '@nestjs/config';
-import { Connection } from 'cypher-query-builder';
+import { Neo4jService } from './neo4js.service';
 
 export const NEO4J_CONFIG = 'NEO4J_CONFIG';
 export const NEO4J_CONNECTION = 'NEO4J_CONNECTION';
+export const NEO4J_SERVICE = 'NEO4J_SERVICE';
 
 export type Neo4jConfig = {
   host: string;
@@ -11,45 +11,17 @@ export type Neo4jConfig = {
   username: string;
 };
 
-const createDatabaseConfig = (configService: ConfigService): Neo4jConfig => {
-  return {
-    host: configService.get('NEO4J_URI'),
-    password: configService.get('NEO4J_PASSWORD'),
-    username: configService.get('NEO4J_USERNAME'),
-  };
-};
-
-@Module({})
+@Module({
+  providers: [Neo4jService],
+})
 export class Neo4jModule {
-  static forRootSync(): DynamicModule {
+  static forRoot(): DynamicModule {
     return {
       module: Neo4jModule,
-      imports: [ConfigModule],
+      // imports: [ConfigModule],
       global: true,
-      providers: [
-        {
-          provide: NEO4J_CONFIG,
-          inject: [ConfigService],
-          useFactory: (ConfigService: ConfigService) =>
-            createDatabaseConfig(ConfigService),
-        },
-        {
-          provide: NEO4J_CONNECTION,
-          inject: [NEO4J_CONFIG],
-          useFactory: (config: Neo4jConfig) => {
-            try {
-              const connection = new Connection(config.host, {
-                username: config.username,
-                password: config.password,
-              });
-
-              return connection;
-            } catch (err) {
-              throw Error(err);
-            }
-          },
-        },
-      ],
+      providers: [Neo4jService],
+      exports: [Neo4jService],
     };
   }
 }

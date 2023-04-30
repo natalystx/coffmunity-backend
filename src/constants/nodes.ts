@@ -1,0 +1,6 @@
+export const NODE = {
+  USER: 'USER',
+  RECIPE: 'RECIPE',
+  COMMENT: 'COMMENT',
+  SAVED_LIST: 'SAVED_LIST',
+};

@@ -6,22 +6,42 @@
 
 /* tslint:disable */
 /* eslint-disable */
-export class PersonInput {
-  id?: Nullable<number>;
-  email?: Nullable<string>;
-  name?: Nullable<string>;
+
+export class CreateUserInput {
+    fullName: string;
+    image?: Nullable<string>;
+    username: string;
 }
 
-export class Person {
-  id?: Nullable<number>;
-  email?: Nullable<string>;
-  name?: Nullable<string>;
+export class UpdateUserInput {
+    id: string;
+    fullName: string;
+    image?: Nullable<string>;
+}
+
+export class User {
+    id: string;
+    fullName: string;
+    image?: Nullable<string>;
+    username: string;
+}
+
+export class ActionResponse {
+    success: boolean;
 }
 
 export abstract class IQuery {
-  abstract helloWorld(): Nullable<string> | Promise<Nullable<string>>;
+    abstract users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
 
-  abstract getPerson(): Nullable<Person> | Promise<Nullable<Person>>;
+    abstract user(username: string): Nullable<User> | Promise<Nullable<User>>;
+}
+
+export abstract class IMutation {
+    abstract createUser(createUserInput?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract updateUser(updateUserInput?: Nullable<UpdateUserInput>): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract deleteUser(id: string): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
 }
 
 type Nullable<T> = T | null;
