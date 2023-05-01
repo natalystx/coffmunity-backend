@@ -21,13 +21,88 @@ type ActionResponse {
   success: Boolean!
 }
 
+type Brew {
+  pour: Float!
+  waterAmount: Float!
+  time: Int!
+  description: String
+}
+
+input BrewInput {
+  pour: Float!
+  waterAmount: Float!
+  time: Int!
+  description: String
+}
+
+input RecipeDetailInput {
+  groundCoffeeAmount: Float!
+  ratio: String!
+  totalTime: Int!
+  grindSize: Float!
+  temperature: Float!
+  totalYield: Float!
+  steps: [BrewInput]!
+}
+
+type RecipeDetail {
+  groundCoffeeAmount: Float!
+  ratio: String!
+  totalTime: Int!
+  grindSize: Float!
+  temperature: Float!
+  totalYield: Float!
+  steps: [Brew]!
+}
+
+input CreateRecipeInput {
+  images: [String]
+  createBy: String!
+  title: String!
+  description: String
+  detail: RecipeDetailInput!
+  productUrl: String
+}
+
+input UpdateRecipeInput {
+  id: String!
+  images: [String]
+  title: String
+  description: String
+  detail: RecipeDetailInput
+  productUrl: String
+}
+
+type Recipe {
+  id: String!
+  images: [String]
+  createBy: String!
+  title: String!
+  description: String!
+  detail: RecipeDetail
+  likes: Int
+  dislikes: Int
+  productUrl: String
+}
+
+input DeleteRecipeInput {
+  username: String!
+  recipeId: String!
+}
+
 type Query {
   users: [User]
   user(username: String!): User
+  recipes: [Recipe]
+  userRecipe(username: String!): [Recipe]
+  recipe(recipeId: String!): Recipe
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput): User
   updateUser(updateUserInput: UpdateUserInput): User
   deleteUser(id: String!): ActionResponse
+  createRecipe(createRecipeInput: CreateRecipeInput): Recipe
+  updateRecipe(updateRecipeInput: UpdateRecipeInput): Recipe
+  deleteRecipe(deleteRecipeInput: DeleteRecipeInput!): ActionResponse
 }

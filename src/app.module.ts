@@ -8,6 +8,7 @@ import { AppResolver } from './app.resolver';
 import { ApolloDriver } from '@nestjs/apollo';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { UserModule } from './domains/user/user.module';
+import { RecipeModule } from './domains/recipe/recipe.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UserModule } from './domains/user/user.module';
     }),
 
     UserModule,
+    RecipeModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
