@@ -1,5 +1,5 @@
 export interface Brew {
-  pour: number;
+  step: number;
   waterAmount: number;
   time: number;
   description?: string;
@@ -15,14 +15,24 @@ export interface RecipeDetail {
   steps: Brew[];
 }
 
+export interface BeanDetail {
+  process: string;
+  roastLevel: string;
+  tasteNotes: string[];
+  origin?: string;
+  varieties?: string[];
+  productUrl?: string;
+}
+
 export interface Recipe {
   id: string;
   images?: string[];
+  brewMethod: string;
   createBy: string;
   title: string;
   description: string;
   detail: RecipeDetail;
   likes?: number;
   dislikes?: number;
-  productUrl?: string;
+  beanDetail?: BeanDetail;
 }

@@ -22,14 +22,14 @@ type ActionResponse {
 }
 
 type Brew {
-  pour: Float!
+  step: Int!
   waterAmount: Float!
   time: Int!
   description: String
 }
 
 input BrewInput {
-  pour: Float!
+  step: Int!
   waterAmount: Float!
   time: Int!
   description: String
@@ -61,6 +61,25 @@ input CreateRecipeInput {
   title: String!
   description: String
   detail: RecipeDetailInput!
+  beanDetail: BeanDetailInput!
+  brewMethod: String!
+}
+
+type BeanDetail {
+  process: String!
+  roastLevel: String
+  tasteNotes: [String]!
+  origin: String
+  varieties: [String]
+  productUrl: String
+}
+
+input BeanDetailInput {
+  process: String!
+  roastLevel: String
+  tasteNotes: [String]!
+  origin: String
+  varieties: [String]
   productUrl: String
 }
 
@@ -70,7 +89,17 @@ input UpdateRecipeInput {
   title: String
   description: String
   detail: RecipeDetailInput
-  productUrl: String
+  beanDetail: BeanDetailInput
+}
+
+input LikeRecipeInput {
+  username: String!
+  recipeId: String!
+}
+
+input DisLikeRecipeInput {
+  username: String!
+  recipeId: String!
 }
 
 type Recipe {
@@ -79,15 +108,23 @@ type Recipe {
   createBy: String!
   title: String!
   description: String!
-  detail: RecipeDetail
+  detail: RecipeDetail!
   likes: Int
   dislikes: Int
-  productUrl: String
+  beanDetail: BeanDetail!
 }
 
 input DeleteRecipeInput {
   username: String!
   recipeId: String!
+}
+
+type IsLike {
+  like: Boolean!
+}
+
+type IsDislike {
+  dislike: Boolean!
 }
 
 type Query {
@@ -96,6 +133,8 @@ type Query {
   recipes: [Recipe]
   userRecipe(username: String!): [Recipe]
   recipe(recipeId: String!): Recipe
+  didLikeRecipe(checkRecipeLikeInput: LikeRecipeInput): IsLike
+  didDislikeRecipe(checkRecipeDislikeInput: DisLikeRecipeInput): IsDislike
 }
 
 type Mutation {
@@ -105,4 +144,6 @@ type Mutation {
   createRecipe(createRecipeInput: CreateRecipeInput): Recipe
   updateRecipe(updateRecipeInput: UpdateRecipeInput): Recipe
   deleteRecipe(deleteRecipeInput: DeleteRecipeInput!): ActionResponse
+  likeRecipe(likeRecipeInput: LikeRecipeInput): ActionResponse
+  dislikeRecipe(dislikeRecipeInput: DisLikeRecipeInput): ActionResponse
 }
