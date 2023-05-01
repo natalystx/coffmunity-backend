@@ -1,3 +1,5 @@
+import { BeanDetail } from 'src/domains/recipe/recipe.entity';
+
 export type CreateUserInput = {
   fullName: string;
   image?: string;
@@ -11,7 +13,7 @@ export type UpdateUserInput = {
 };
 
 type Brew = {
-  pour: number;
+  step: number;
   waterAmount: number;
   time: number;
   description?: string;
@@ -33,7 +35,8 @@ export type CreateRecipeInput = {
   title: string;
   description: string;
   detail: RecipeDetail;
-  productUrl?: string;
+  beanDetail?: BeanDetail;
+  brewMethod: string;
 };
 
 export type UpdateRecipeInput = {
@@ -43,9 +46,20 @@ export type UpdateRecipeInput = {
   description?: string;
   detail?: RecipeDetail;
   productUrl?: string;
+  beanDetail?: BeanDetail;
 };
 
 export type DeleteRecipeInput = {
+  username: string;
+  recipeId: string;
+};
+
+export type LikeRecipeInput = {
+  username: string;
+  recipeId: string;
+};
+
+export type DisLikeRecipeInput = {
   username: string;
   recipeId: string;
 };

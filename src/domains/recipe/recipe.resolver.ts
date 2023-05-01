@@ -1,8 +1,14 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Neo4jService } from 'src/neo4j/neo4js.service';
-import { CreateRecipeInput, DeleteRecipeInput, UpdateRecipeInput } from 'type';
+import {
+  CreateRecipeInput,
+  DeleteRecipeInput,
+  DisLikeRecipeInput,
+  LikeRecipeInput,
+  UpdateRecipeInput,
+} from 'type';
 import { NODE } from 'src/constants/nodes';
-import { node, relation } from 'cypher-query-builder';
+import { node } from 'cypher-query-builder';
 import { RELATIONSHIP } from 'src/constants/relationships';
 import { Recipe } from './recipe.entity';
 import { queryToRecipe } from './utils/queryToRecipe';
@@ -29,7 +35,10 @@ export class RecipeResolver {
           ...createRecipeInput,
           id: '',
           detail: JSON.stringify(createRecipeInput.detail),
+          beanDetail: JSON.stringify(createRecipeInput.beanDetail),
           images: JSON.stringify(createRecipeInput.images),
+          likes: 0,
+          dislikes: 0,
         }),
       ])
       .setVariables({
@@ -60,13 +69,16 @@ export class RecipeResolver {
   ) {
     let updateList = {};
     const keys = Object.keys(updateRecipeInput);
+    const convertToJSON = ['detail', 'beanDetail', 'images'];
 
     keys.forEach((key) => {
       if (key !== 'id') {
         if (!isEmpty(updateRecipeInput[key])) {
           updateList = {
             ...updateList,
-            [`${NODE.RECIPE}.${key}`]: updateRecipeInput[key],
+            [`${NODE.RECIPE}.${key}`]: convertToJSON.includes(key)
+              ? JSON.stringify(updateRecipeInput[key])
+              : updateRecipeInput[key],
           };
         }
       }
@@ -120,12 +132,64 @@ export class RecipeResolver {
         success: true,
       };
     } catch (error) {
-      console.log(error);
-
       return {
         success: false,
       };
     }
+  }
+
+  @Mutation('likeRecipe')
+  async likeRecipe(@Args('likeRecipeInput') likeRecipeInput: LikeRecipeInput) {
+    await this.neo4jService
+      .initQuery()
+      .raw(
+        `MATCH (user:${NODE.USER} {username: "${likeRecipeInput.username}"}),
+      (recipe:${NODE.RECIPE} {id: "${likeRecipeInput.recipeId}"})
+      OPTIONAL MATCH (user)-[like:${RELATIONSHIP.LIKE}]->(recipe)
+      OPTIONAL MATCH (user)-[dislike:${RELATIONSHIP.DISLIKE}]->(recipe)
+      DELETE like, dislike
+      WITH user, recipe, COALESCE(like, NULL) as prevLike, COALESCE(dislike, NULL) as prevDislike
+      SET recipe.likes = recipe.likes - CASE WHEN prevLike IS NOT NULL THEN 1 ELSE 0 END,
+          recipe.dislikes = recipe.dislikes - CASE WHEN prevDislike IS NOT NULL THEN 1 ELSE 0 END
+      WITH user, recipe, prevLike, prevDislike
+      FOREACH (x IN CASE WHEN prevLike IS NULL OR prevDislike IS NULL THEN [1] ELSE [] END |
+          CREATE (user)-[:${RELATIONSHIP.LIKE}]->(recipe)
+          SET recipe.likes = recipe.likes + 1
+      )`,
+      )
+      .run();
+
+    return {
+      success: true,
+    };
+  }
+
+  @Mutation('dislikeRecipe')
+  async dislikeRecipe(
+    @Args('dislikeRecipeInput') dislikeRecipeInput: DisLikeRecipeInput,
+  ) {
+    await this.neo4jService
+      .initQuery()
+      .raw(
+        `MATCH (user:${NODE.USER} {username: "${dislikeRecipeInput.username}"}),
+      (recipe:${NODE.RECIPE} {id: "${dislikeRecipeInput.recipeId}"})
+      OPTIONAL MATCH (user)-[like:${RELATIONSHIP.LIKE}]->(recipe)
+      OPTIONAL MATCH (user)-[dislike:${RELATIONSHIP.DISLIKE}]->(recipe)
+      DELETE like, dislike
+      WITH user, recipe, COALESCE(like, NULL) as prevLike, COALESCE(dislike, NULL) as prevDislike
+      SET recipe.likes = recipe.likes - CASE WHEN prevLike IS NOT NULL THEN 1 ELSE 0 END,
+          recipe.dislikes = recipe.dislikes - CASE WHEN prevDislike IS NOT NULL THEN 1 ELSE 0 END
+      WITH user, recipe, prevLike, prevDislike
+      FOREACH (x IN CASE WHEN prevLike IS NULL OR prevDislike IS NULL THEN [1] ELSE [] END |
+          CREATE (user)-[:${RELATIONSHIP.DISLIKE}]->(recipe)
+          SET recipe.dislikes = recipe.dislikes + 1
+      )`,
+      )
+      .run();
+
+    return {
+      success: true,
+    };
   }
 
   @Query('recipes')

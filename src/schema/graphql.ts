@@ -21,7 +21,7 @@ export class UpdateUserInput {
 }
 
 export class BrewInput {
-    pour: number;
+    step: number;
     waterAmount: number;
     time: number;
     description?: Nullable<string>;
@@ -43,6 +43,16 @@ export class CreateRecipeInput {
     title: string;
     description?: Nullable<string>;
     detail: RecipeDetailInput;
+    beanDetail: BeanDetailInput;
+    brewMethod: string;
+}
+
+export class BeanDetailInput {
+    process: string;
+    roastLevel?: Nullable<string>;
+    tasteNotes: Nullable<string>[];
+    origin?: Nullable<string>;
+    varieties?: Nullable<Nullable<string>[]>;
     productUrl?: Nullable<string>;
 }
 
@@ -52,7 +62,17 @@ export class UpdateRecipeInput {
     title?: Nullable<string>;
     description?: Nullable<string>;
     detail?: Nullable<RecipeDetailInput>;
-    productUrl?: Nullable<string>;
+    beanDetail?: Nullable<BeanDetailInput>;
+}
+
+export class LikeRecipeInput {
+    username: string;
+    recipeId: string;
+}
+
+export class DisLikeRecipeInput {
+    username: string;
+    recipeId: string;
 }
 
 export class DeleteRecipeInput {
@@ -72,7 +92,7 @@ export class ActionResponse {
 }
 
 export class Brew {
-    pour: number;
+    step: number;
     waterAmount: number;
     time: number;
     description?: Nullable<string>;
@@ -88,16 +108,33 @@ export class RecipeDetail {
     steps: Nullable<Brew>[];
 }
 
+export class BeanDetail {
+    process: string;
+    roastLevel?: Nullable<string>;
+    tasteNotes: Nullable<string>[];
+    origin?: Nullable<string>;
+    varieties?: Nullable<Nullable<string>[]>;
+    productUrl?: Nullable<string>;
+}
+
 export class Recipe {
     id: string;
     images?: Nullable<Nullable<string>[]>;
     createBy: string;
     title: string;
     description: string;
-    detail?: Nullable<RecipeDetail>;
+    detail: RecipeDetail;
     likes?: Nullable<number>;
     dislikes?: Nullable<number>;
-    productUrl?: Nullable<string>;
+    beanDetail: BeanDetail;
+}
+
+export class IsLike {
+    like: boolean;
+}
+
+export class IsDislike {
+    dislike: boolean;
 }
 
 export abstract class IQuery {
@@ -110,6 +147,10 @@ export abstract class IQuery {
     abstract userRecipe(username: string): Nullable<Nullable<Recipe>[]> | Promise<Nullable<Nullable<Recipe>[]>>;
 
     abstract recipe(recipeId: string): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+
+    abstract didLikeRecipe(checkRecipeLikeInput?: Nullable<LikeRecipeInput>): Nullable<IsLike> | Promise<Nullable<IsLike>>;
+
+    abstract didDislikeRecipe(checkRecipeDislikeInput?: Nullable<DisLikeRecipeInput>): Nullable<IsDislike> | Promise<Nullable<IsDislike>>;
 }
 
 export abstract class IMutation {
@@ -124,6 +165,10 @@ export abstract class IMutation {
     abstract updateRecipe(updateRecipeInput?: Nullable<UpdateRecipeInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
 
     abstract deleteRecipe(deleteRecipeInput: DeleteRecipeInput): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
+
+    abstract likeRecipe(likeRecipeInput?: Nullable<LikeRecipeInput>): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
+
+    abstract dislikeRecipe(dislikeRecipeInput?: Nullable<DisLikeRecipeInput>): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
 }
 
 type Nullable<T> = T | null;

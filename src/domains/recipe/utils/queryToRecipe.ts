@@ -5,6 +5,7 @@ export const queryToRecipe = (query: Record<string, unknown>) => {
     ...query,
     description: query.description,
     detail: JSON.parse(query.detail as string),
+    beanDetail: JSON.parse(query.beanDetail as string),
     images: JSON.parse((query?.images as string) || '[]'),
   };
 

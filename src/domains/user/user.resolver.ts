@@ -3,8 +3,14 @@ import { User } from './user.entity';
 import { Neo4jService } from 'src/neo4j/neo4js.service';
 import { node } from 'cypher-query-builder';
 import { NODE } from 'src/constants/nodes';
-import { CreateUserInput, UpdateUserInput } from 'type';
+import {
+  CreateUserInput,
+  DisLikeRecipeInput,
+  LikeRecipeInput,
+  UpdateUserInput,
+} from 'type';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { RELATIONSHIP } from 'src/constants/relationships';
 
 @Resolver('User')
 export class UserResolver {
@@ -109,5 +115,48 @@ export class UserResolver {
         success: false,
       };
     }
+  }
+
+  @Query('didLikeRecipe')
+  async didLikeRecipe(
+    @Args('checkRecipeLikeInput') checkRecipeLikeInput: LikeRecipeInput,
+  ) {
+    const result = await this.neo4jService
+      .initQuery()
+      .raw(
+        `
+      MATCH (user:${NODE.USER} {username: "${checkRecipeLikeInput.username}"}) 
+      - [:${RELATIONSHIP.LIKE}] -> 
+      (recipe:${NODE.RECIPE} {id: "${checkRecipeLikeInput.recipeId}"})
+    `,
+      )
+      .return('recipe')
+      .run();
+
+    return {
+      like: result.length > 0,
+    };
+  }
+
+  @Query('didDislikeRecipe')
+  async didDislikeRecipe(
+    @Args('checkRecipeDislikeInput')
+    checkRecipeDislikeInput: DisLikeRecipeInput,
+  ) {
+    const result = await this.neo4jService
+      .initQuery()
+      .raw(
+        `
+      MATCH (user:${NODE.USER} {username: "${checkRecipeDislikeInput.username}"}) 
+      - [:${RELATIONSHIP.DISLIKE}] -> 
+      (recipe:${NODE.RECIPE} {id: "${checkRecipeDislikeInput.recipeId}"})
+    `,
+      )
+      .return('recipe')
+      .run();
+
+    return {
+      dislike: result.length > 0,
+    };
   }
 }
