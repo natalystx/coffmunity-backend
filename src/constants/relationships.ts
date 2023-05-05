@@ -5,4 +5,5 @@ export const RELATIONSHIP = {
   DISLIKE: 'DISLIKE',
   COMMENT_TO: 'COMMENT_TO',
   ADD: 'ADD',
+  FOLLOW: 'FOLLOW',
 };

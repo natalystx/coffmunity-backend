@@ -80,11 +80,17 @@ export class DeleteRecipeInput {
     recipeId: string;
 }
 
+export class FollowUserInput {
+    myUsername: string;
+    followUser: string;
+}
+
 export class User {
     id: string;
     fullName: string;
     image?: Nullable<string>;
     username: string;
+    followers?: Nullable<number>;
 }
 
 export class ActionResponse {
@@ -169,6 +175,8 @@ export abstract class IMutation {
     abstract likeRecipe(likeRecipeInput?: Nullable<LikeRecipeInput>): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
 
     abstract dislikeRecipe(dislikeRecipeInput?: Nullable<DisLikeRecipeInput>): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
+
+    abstract followUser(followUserInput?: Nullable<FollowUserInput>): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
 }
 
 type Nullable<T> = T | null;
