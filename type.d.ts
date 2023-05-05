@@ -63,3 +63,8 @@ export type DisLikeRecipeInput = {
   username: string;
   recipeId: string;
 };
+
+export type FollowUserInput = {
+  myUsername: string;
+  followUser: string;
+};

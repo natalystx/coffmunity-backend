@@ -3,4 +3,5 @@ export class User {
   fullName: string;
   image?: string;
   username: string;
+  followers?: number;
 }

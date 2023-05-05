@@ -6,6 +6,7 @@ import { NODE } from 'src/constants/nodes';
 import {
   CreateUserInput,
   DisLikeRecipeInput,
+  FollowUserInput,
   LikeRecipeInput,
   UpdateUserInput,
 } from 'type';
@@ -62,6 +63,7 @@ export class UserResolver {
       .createNode(NODE.USER, NODE.USER, {
         ...userInput,
         id: '',
+        followers: 0,
       })
       .setVariables({
         [`${NODE.USER}.id`]: 'apoc.create.uuid()',
@@ -157,6 +159,29 @@ export class UserResolver {
 
     return {
       dislike: result.length > 0,
+    };
+  }
+
+  @Mutation('followUser')
+  async followUser(@Args('followUserInput') followUserInput: FollowUserInput) {
+    await this.neo4jService
+      .initQuery()
+      .raw(
+        `MATCH (me:${NODE.USER} {username: "${followUserInput.myUsername}"}), (you:${NODE.USER} {username: "${followUserInput.followUser}"})
+        OPTIONAL MATCH (me)-[prevFollow:${RELATIONSHIP.FOLLOW}]->(you)   
+        DELETE prevFollow
+        WITH me, you, prevFollow
+        SET you.followers = you.followers - CASE WHEN prevFollow IS NOT NULL THEN 1 ELSE 0 END
+        WITH me, you, prevFollow
+        FOREACH (x IN CASE WHEN prevFollow IS NULL THEN [1] ELSE [] END |
+            CREATE (me)-[:${RELATIONSHIP.FOLLOW}]->(you)
+            SET you.followers = you.followers + 1
+        )`,
+      )
+      .run();
+
+    return {
+      success: true,
     };
   }
 }
