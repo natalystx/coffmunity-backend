@@ -9,6 +9,7 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { UserModule } from './domains/user/user.module';
 import { RecipeModule } from './domains/recipe/recipe.module';
+import { CommentModule } from './domains/comment/comment.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { RecipeModule } from './domains/recipe/recipe.module';
 
     UserModule,
     RecipeModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

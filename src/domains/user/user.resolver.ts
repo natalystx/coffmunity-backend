@@ -63,10 +63,12 @@ export class UserResolver {
       .createNode(NODE.USER, NODE.USER, {
         ...userInput,
         id: '',
+        createdTime: '',
         followers: 0,
       })
       .setVariables({
         [`${NODE.USER}.id`]: 'apoc.create.uuid()',
+        [`${NODE.USER}.createdTime`]: 'timestamp()',
       })
       .return(NODE.USER)
       .run();

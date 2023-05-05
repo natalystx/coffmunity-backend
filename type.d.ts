@@ -68,3 +68,20 @@ export type FollowUserInput = {
   myUsername: string;
   followUser: string;
 };
+
+export type CommentInput = {
+  comment: string;
+  createBy: string;
+  commentToNode: string;
+};
+
+export type DeleteCommentInput = {
+  id: string;
+  createBy: string;
+  commentToNode: string;
+};
+
+export type EditCommentInput = {
+  id: string;
+  comment: string;
+};

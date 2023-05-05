@@ -4,4 +4,5 @@ export class User {
   image?: string;
   username: string;
   followers?: number;
+  createdTime: number;
 }

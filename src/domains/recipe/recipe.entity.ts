@@ -35,4 +35,5 @@ export interface Recipe {
   likes?: number;
   dislikes?: number;
   beanDetail?: BeanDetail;
+  createdTime: number;
 }
