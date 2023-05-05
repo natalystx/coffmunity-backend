@@ -1,3 +1,5 @@
+scalar Date
+
 input CreateUserInput {
   fullName: String!
   image: String
@@ -16,6 +18,7 @@ type User {
   image: String
   username: String!
   followers: Int
+  createdTime: Date!
 }
 
 type ActionResponse {
@@ -113,6 +116,7 @@ type Recipe {
   likes: Int
   dislikes: Int
   beanDetail: BeanDetail!
+  createdTime: Date!
 }
 
 input DeleteRecipeInput {
@@ -141,6 +145,32 @@ type Query {
   recipe(recipeId: String!): Recipe
   didLikeRecipe(checkRecipeLikeInput: LikeRecipeInput): IsLike
   didDislikeRecipe(checkRecipeDislikeInput: DisLikeRecipeInput): IsDislike
+  comments(nodeId: String!): [Comment]!
+}
+
+type Comment {
+  id: String!
+  comment: String!
+  createBy: String!
+  commentToNode: String
+  createdTime: Date!
+}
+
+input CommentInput {
+  comment: String!
+  createBy: String!
+  commentToNode: String!
+}
+
+input DeleteCommentInput {
+  id: String!
+  createBy: String!
+  commentToNode: String!
+}
+
+input EditCommentInput {
+  id: String!
+  comment: String!
 }
 
 type Mutation {
@@ -153,4 +183,7 @@ type Mutation {
   likeRecipe(likeRecipeInput: LikeRecipeInput): ActionResponse
   dislikeRecipe(dislikeRecipeInput: DisLikeRecipeInput): ActionResponse
   followUser(followUserInput: FollowUserInput): ActionResponse
+  createComment(commentInput: CommentInput): Comment!
+  deleteComment(deleteCommentInput: DeleteCommentInput): ActionResponse
+  editComment(editCommentInput: EditCommentInput): Comment
 }

@@ -1,4 +1,3 @@
-
 /*
  * -------------------------------------------------------
  * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
@@ -85,12 +84,30 @@ export class FollowUserInput {
     followUser: string;
 }
 
+export class CommentInput {
+    comment: string;
+    createBy: string;
+    commentToNode: string;
+}
+
+export class DeleteCommentInput {
+    id: string;
+    createBy: string;
+    commentToNode: string;
+}
+
+export class EditCommentInput {
+    id: string;
+    comment: string;
+}
+
 export class User {
     id: string;
     fullName: string;
     image?: Nullable<string>;
     username: string;
     followers?: Nullable<number>;
+    createdTime: Date;
 }
 
 export class ActionResponse {
@@ -133,6 +150,7 @@ export class Recipe {
     likes?: Nullable<number>;
     dislikes?: Nullable<number>;
     beanDetail: BeanDetail;
+    createdTime: Date;
 }
 
 export class IsLike {
@@ -157,6 +175,16 @@ export abstract class IQuery {
     abstract didLikeRecipe(checkRecipeLikeInput?: Nullable<LikeRecipeInput>): Nullable<IsLike> | Promise<Nullable<IsLike>>;
 
     abstract didDislikeRecipe(checkRecipeDislikeInput?: Nullable<DisLikeRecipeInput>): Nullable<IsDislike> | Promise<Nullable<IsDislike>>;
+
+    abstract comments(nodeId: string): Nullable<Comment>[] | Promise<Nullable<Comment>[]>;
+}
+
+export class Comment {
+    id: string;
+    comment: string;
+    createBy: string;
+    commentToNode?: Nullable<string>;
+    createdTime: Date;
 }
 
 export abstract class IMutation {
@@ -177,6 +205,12 @@ export abstract class IMutation {
     abstract dislikeRecipe(dislikeRecipeInput?: Nullable<DisLikeRecipeInput>): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
 
     abstract followUser(followUserInput?: Nullable<FollowUserInput>): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
+
+    abstract createComment(commentInput?: Nullable<CommentInput>): Comment | Promise<Comment>;
+
+    abstract deleteComment(deleteCommentInput?: Nullable<DeleteCommentInput>): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
+
+    abstract editComment(editCommentInput?: Nullable<EditCommentInput>): Nullable<Comment> | Promise<Nullable<Comment>>;
 }
 
 type Nullable<T> = T | null;

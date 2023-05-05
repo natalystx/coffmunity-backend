@@ -23,29 +23,30 @@ export class RecipeResolver {
   async createRecipe(
     @Args('createRecipeInput') createRecipeInput: CreateRecipeInput,
   ) {
+    console.log(createRecipeInput);
+
     const result = await this.neo4jService
       .initQuery()
-      .match(
-        node(NODE.USER, NODE.USER, {
-          username: createRecipeInput.createBy,
-        }),
-      )
       .create([
         node(NODE.RECIPE, NODE.RECIPE, {
           ...createRecipeInput,
           id: '',
           detail: JSON.stringify(createRecipeInput.detail),
           beanDetail: JSON.stringify(createRecipeInput.beanDetail),
-          images: JSON.stringify(createRecipeInput.images),
+          images: JSON.stringify(createRecipeInput?.images || []),
           likes: 0,
           dislikes: 0,
+          createdTime: '',
         }),
       ])
       .setVariables({
         [`${NODE.RECIPE}.id`]: 'apoc.create.uuid()',
+        [`${NODE.RECIPE}.createdTime`]: 'timestamp()',
       })
       .return(NODE.RECIPE)
       .run();
+
+    console.log('result', JSON.stringify(result));
     const recipe = result[0][NODE.RECIPE].properties;
 
     const formattedRecipe = queryToRecipe(recipe);
