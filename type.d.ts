@@ -85,3 +85,23 @@ export type EditCommentInput = {
   id: string;
   comment: string;
 };
+
+export type CreateSavedListInput = {
+  createBy: string;
+  name: string;
+};
+
+export type AddRecipeToListInput = {
+  listId: string;
+  recipeId: string;
+};
+
+export type RemoveRecipeToListInput = {
+  listId: string;
+  recipeId: string;
+};
+
+export type DeleteSavedListInput = {
+  listId: string;
+  createBy: string;
+};

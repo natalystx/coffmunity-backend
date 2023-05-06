@@ -146,6 +146,8 @@ type Query {
   didLikeRecipe(checkRecipeLikeInput: LikeRecipeInput): IsLike
   didDislikeRecipe(checkRecipeDislikeInput: DisLikeRecipeInput): IsDislike
   comments(nodeId: String!): [Comment]!
+  savedLists(username: String!): [SavedList]
+  savedListById(listId: String!): SavedList
 }
 
 type Comment {
@@ -173,6 +175,34 @@ input EditCommentInput {
   comment: String!
 }
 
+type SavedList {
+  id: String!
+  name: String!
+  saveRecipeIds: [String]!
+  createBy: String!
+  createdTime: Date!
+}
+
+input CreateSavedListInput {
+  createBy: String
+  name: String
+}
+
+input AddRecipeToListInput {
+  listId: String!
+  recipeId: String!
+}
+
+input RemoveRecipeToListInput {
+  listId: String!
+  recipeId: String!
+}
+
+input DeleteSavedListInput {
+  listId: String!
+  createBy: String!
+}
+
 type Mutation {
   createUser(createUserInput: CreateUserInput): User
   updateUser(updateUserInput: UpdateUserInput): User
@@ -186,4 +216,10 @@ type Mutation {
   createComment(commentInput: CommentInput): Comment!
   deleteComment(deleteCommentInput: DeleteCommentInput): ActionResponse
   editComment(editCommentInput: EditCommentInput): Comment
+  createSavedList(createSavedListInput: CreateSavedListInput): SavedList
+  addRecipeToList(addRecipeToListInput: AddRecipeToListInput): SavedList
+  removeRecipeToList(
+    removeRecipeToListInput: RemoveRecipeToListInput
+  ): SavedList
+  deleteSavedList(deleteSavedListInput: DeleteSavedListInput): ActionResponse
 }

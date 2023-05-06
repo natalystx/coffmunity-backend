@@ -1,3 +1,4 @@
+
 /*
  * -------------------------------------------------------
  * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
@@ -101,6 +102,26 @@ export class EditCommentInput {
     comment: string;
 }
 
+export class CreateSavedListInput {
+    createBy?: Nullable<string>;
+    name?: Nullable<string>;
+}
+
+export class AddRecipeToListInput {
+    listId: string;
+    recipeId: string;
+}
+
+export class RemoveRecipeToListInput {
+    listId: string;
+    recipeId: string;
+}
+
+export class DeleteSavedListInput {
+    listId: string;
+    createBy: string;
+}
+
 export class User {
     id: string;
     fullName: string;
@@ -177,6 +198,10 @@ export abstract class IQuery {
     abstract didDislikeRecipe(checkRecipeDislikeInput?: Nullable<DisLikeRecipeInput>): Nullable<IsDislike> | Promise<Nullable<IsDislike>>;
 
     abstract comments(nodeId: string): Nullable<Comment>[] | Promise<Nullable<Comment>[]>;
+
+    abstract savedLists(username: string): Nullable<Nullable<SavedList>[]> | Promise<Nullable<Nullable<SavedList>[]>>;
+
+    abstract savedListById(listId: string): Nullable<SavedList> | Promise<Nullable<SavedList>>;
 }
 
 export class Comment {
@@ -184,6 +209,14 @@ export class Comment {
     comment: string;
     createBy: string;
     commentToNode?: Nullable<string>;
+    createdTime: Date;
+}
+
+export class SavedList {
+    id: string;
+    name: string;
+    saveRecipeIds: Nullable<string>[];
+    createBy: string;
     createdTime: Date;
 }
 
@@ -211,6 +244,14 @@ export abstract class IMutation {
     abstract deleteComment(deleteCommentInput?: Nullable<DeleteCommentInput>): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
 
     abstract editComment(editCommentInput?: Nullable<EditCommentInput>): Nullable<Comment> | Promise<Nullable<Comment>>;
+
+    abstract createSavedList(createSavedListInput?: Nullable<CreateSavedListInput>): Nullable<SavedList> | Promise<Nullable<SavedList>>;
+
+    abstract addRecipeToList(addRecipeToListInput?: Nullable<AddRecipeToListInput>): Nullable<SavedList> | Promise<Nullable<SavedList>>;
+
+    abstract removeRecipeToList(removeRecipeToListInput?: Nullable<RemoveRecipeToListInput>): Nullable<SavedList> | Promise<Nullable<SavedList>>;
+
+    abstract deleteSavedList(deleteSavedListInput?: Nullable<DeleteSavedListInput>): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
 }
 
 type Nullable<T> = T | null;

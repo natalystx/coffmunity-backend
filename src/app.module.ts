@@ -10,6 +10,7 @@ import { AuthorizationModule } from './authorization/authorization.module';
 import { UserModule } from './domains/user/user.module';
 import { RecipeModule } from './domains/recipe/recipe.module';
 import { CommentModule } from './domains/comment/comment.module';
+import { SavedListModule } from './domains/saved-list/saved-list.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { CommentModule } from './domains/comment/comment.module';
     UserModule,
     RecipeModule,
     CommentModule,
+    SavedListModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
