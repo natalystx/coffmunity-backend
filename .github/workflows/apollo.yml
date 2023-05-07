@@ -37,3 +37,6 @@ jobs:
       - name: Run check against prod
         run: |
           rover graph check coffmunity-graphql@main --schema src/schema/schema.graphql
+         - name: Upload schema to Apollo Studio
+      run: |
+        npx apollo schema:push --endpoint=${{ secrets.APOLLO_KEY }} 
