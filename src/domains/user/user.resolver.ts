@@ -9,9 +9,11 @@ import {
   FollowUserInput,
   LikeRecipeInput,
   UpdateUserInput,
+  UpdateUsernameAliasInput,
 } from 'type';
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { RELATIONSHIP } from 'src/constants/relationships';
+import { AuthorizationGuard } from 'src/authorization/authorization.guard';
 
 @Resolver('User')
 export class UserResolver {
@@ -56,7 +58,7 @@ export class UserResolver {
   async createUser(@Args('createUserInput') userInput: CreateUserInput) {
     const existUser = await this.findOne(userInput.username);
     if (existUser?.id) {
-      throw new HttpException('This user already exist', HttpStatus.FORBIDDEN);
+      return existUser;
     }
     const result = await this.neo4jService
       .initQuery()
@@ -76,6 +78,7 @@ export class UserResolver {
     return result[0][NODE.USER].properties as User;
   }
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('updateUser')
   async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     const result = await this.neo4jService
@@ -98,6 +101,7 @@ export class UserResolver {
     return result[0][NODE.USER].properties as User;
   }
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('deleteUser')
   async deleteUser(@Args('id') id: string) {
     try {
@@ -121,6 +125,7 @@ export class UserResolver {
     }
   }
 
+  @UseGuards(AuthorizationGuard)
   @Query('didLikeRecipe')
   async didLikeRecipe(
     @Args('checkRecipeLikeInput') checkRecipeLikeInput: LikeRecipeInput,
@@ -142,6 +147,7 @@ export class UserResolver {
     };
   }
 
+  @UseGuards(AuthorizationGuard)
   @Query('didDislikeRecipe')
   async didDislikeRecipe(
     @Args('checkRecipeDislikeInput')
@@ -164,6 +170,7 @@ export class UserResolver {
     };
   }
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('followUser')
   async followUser(@Args('followUserInput') followUserInput: FollowUserInput) {
     await this.neo4jService
@@ -185,5 +192,27 @@ export class UserResolver {
     return {
       success: true,
     };
+  }
+
+  @UseGuards(AuthorizationGuard)
+  @Mutation('updateUsernameAlias')
+  async updateUsernameAlias(
+    @Args('updateUsernameAliasInput')
+    updateUsernameAliasInput: UpdateUsernameAliasInput,
+  ) {
+    const result = await this.neo4jService
+      .initQuery()
+      .match(
+        node(NODE.USER, NODE.USER, {
+          username: updateUsernameAliasInput.username,
+        }),
+      )
+      .setValues({
+        [`${NODE.USER}.usernameAlias`]: updateUsernameAliasInput.usernameAlias,
+      })
+      .return(NODE.USER)
+      .run();
+
+    return result[0][NODE.USER].properties as User;
   }
 }

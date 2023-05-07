@@ -11,11 +11,14 @@ import { SavedList } from './save-list.entity';
 import { RELATIONSHIP } from 'src/constants/relationships';
 import { queryToSavedList } from './utils/queryToSavedList';
 import { node } from 'cypher-query-builder';
+import { UseGuards } from '@nestjs/common';
+import { AuthorizationGuard } from 'src/authorization/authorization.guard';
 
 @Resolver('SavedList')
 export class SavedListResolver {
   constructor(private neo4jService: Neo4jService) {}
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('createSavedList')
   async createSavedList(
     @Args('createSavedListInput') createSavedListInput: CreateSavedListInput,
@@ -35,6 +38,7 @@ export class SavedListResolver {
     return queryToSavedList(result[0]['saveList'].properties);
   }
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('addRecipeToList')
   async addRecipeToList(
     @Args('addRecipeToListInput') addRecipeToListInput: AddRecipeToListInput,
@@ -62,6 +66,7 @@ export class SavedListResolver {
     return queryToSavedList(result[0]['list'].properties);
   }
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('removeRecipeToList')
   async removeRecipeToList(
     @Args('removeRecipeToListInput')
@@ -83,6 +88,7 @@ export class SavedListResolver {
     return queryToSavedList(result[0]['list'].properties);
   }
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('deleteSavedList')
   async deleteSavedList(
     @Args('deleteSavedListInput') deleteSavedListInput: DeleteSavedListInput,
@@ -101,7 +107,7 @@ export class SavedListResolver {
       success: true,
     };
   }
-
+  @UseGuards(AuthorizationGuard)
   @Query('savedLists')
   async findAllSavedListByUsername(@Args('username') username: string) {
     const result = await this.neo4jService
@@ -118,6 +124,7 @@ export class SavedListResolver {
     return formattedResult;
   }
 
+  @UseGuards(AuthorizationGuard)
   @Query('savedListById')
   async findAllSavedListById(@Args('username') listId: string) {
     const result = await this.neo4jService

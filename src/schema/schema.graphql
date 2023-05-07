@@ -19,6 +19,7 @@ type User {
   username: String!
   followers: Int
   createdTime: Date!
+  usernameAlias: String
 }
 
 type ActionResponse {
@@ -203,9 +204,15 @@ input DeleteSavedListInput {
   createBy: String!
 }
 
+input UpdateUsernameAliasInput {
+  username: String!
+  usernameAlias: String!
+}
+
 type Mutation {
   createUser(createUserInput: CreateUserInput): User
   updateUser(updateUserInput: UpdateUserInput): User
+  updateUsernameAlias(updateUsernameAliasInput: UpdateUsernameAliasInput): User
   deleteUser(id: String!): ActionResponse
   createRecipe(createRecipeInput: CreateRecipeInput): Recipe
   updateRecipe(updateRecipeInput: UpdateRecipeInput): Recipe

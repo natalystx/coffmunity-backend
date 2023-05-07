@@ -18,7 +18,6 @@ export class Neo4jModule {
   static forRoot(): DynamicModule {
     return {
       module: Neo4jModule,
-      // imports: [ConfigModule],
       global: true,
       providers: [Neo4jService],
       exports: [Neo4jService],

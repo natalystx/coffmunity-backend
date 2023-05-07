@@ -105,3 +105,8 @@ export type DeleteSavedListInput = {
   listId: string;
   createBy: string;
 };
+
+export type UpdateUsernameAliasInput = {
+  username: string;
+  usernameAlias: string;
+};

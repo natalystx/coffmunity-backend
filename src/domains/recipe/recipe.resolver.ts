@@ -14,11 +14,14 @@ import { Recipe } from './recipe.entity';
 import { queryToRecipe } from './utils/queryToRecipe';
 import { isEmpty } from 'lodash';
 import { ActionResponse } from 'src/schema/graphql';
+import { UseGuards } from '@nestjs/common';
+import { AuthorizationGuard } from 'src/authorization/authorization.guard';
 
 @Resolver('Recipe')
 export class RecipeResolver {
   constructor(private neo4jService: Neo4jService) {}
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('createRecipe')
   async createRecipe(
     @Args('createRecipeInput') createRecipeInput: CreateRecipeInput,
@@ -46,7 +49,6 @@ export class RecipeResolver {
       .return(NODE.RECIPE)
       .run();
 
-    console.log('result', JSON.stringify(result));
     const recipe = result[0][NODE.RECIPE].properties;
 
     const formattedRecipe = queryToRecipe(recipe);
@@ -64,6 +66,7 @@ export class RecipeResolver {
     return formattedRecipe as Recipe;
   }
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('updateRecipe')
   async updateRecipe(
     @Args('updateRecipeInput') updateRecipeInput: UpdateRecipeInput,
@@ -105,6 +108,7 @@ export class RecipeResolver {
     return formattedRecipe as Recipe;
   }
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('deleteRecipe')
   async deleteRecipe(
     @Args('deleteRecipeInput') deleteRecipeInput: DeleteRecipeInput,
@@ -138,7 +142,7 @@ export class RecipeResolver {
       };
     }
   }
-
+  @UseGuards(AuthorizationGuard)
   @Mutation('likeRecipe')
   async likeRecipe(@Args('likeRecipeInput') likeRecipeInput: LikeRecipeInput) {
     await this.neo4jService
@@ -165,6 +169,7 @@ export class RecipeResolver {
     };
   }
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('dislikeRecipe')
   async dislikeRecipe(
     @Args('dislikeRecipeInput') dislikeRecipeInput: DisLikeRecipeInput,
