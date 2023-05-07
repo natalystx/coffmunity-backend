@@ -24,6 +24,7 @@ import { SavedListModule } from './domains/saved-list/saved-list.module';
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
       playground: true,
+      cors: false,
     }),
 
     UserModule,

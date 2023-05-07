@@ -38,6 +38,7 @@
     "rxjs": "^7.2.0"
   },
   "devDependencies": {
+    "@apollo/subgraph": "^2.4.3",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
@@ -47,6 +48,8 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
+    "apollo": "^2.33.4",
+    "apollo-language-server": "^1.26.3",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
