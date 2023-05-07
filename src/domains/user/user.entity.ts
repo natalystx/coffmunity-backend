@@ -5,4 +5,5 @@ export class User {
   username: string;
   followers?: number;
   createdTime: number;
+  usernameAlias?: string;
 }

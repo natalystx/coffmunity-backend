@@ -5,10 +5,14 @@ import { Neo4jService } from 'src/neo4j/neo4js.service';
 import { CommentInput, DeleteCommentInput, EditCommentInput } from 'type';
 import { Comment } from './comment.entity';
 import { node } from 'cypher-query-builder';
+import { UseGuards } from '@nestjs/common';
+import { AuthorizationGuard } from 'src/authorization/authorization.guard';
 
 @Resolver('Comment')
 export class CommentResolver {
   constructor(private neo4jService: Neo4jService) {}
+
+  @UseGuards(AuthorizationGuard)
   @Mutation('createComment')
   async commentTo(@Args('commentInput') commentInput: CommentInput) {
     const result = await this.neo4jService
@@ -27,6 +31,7 @@ export class CommentResolver {
     return result[0]['comment'].properties as Comment;
   }
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('deleteComment')
   async deleteComment(
     @Args('deleteCommentInput') deleteCommentInput: DeleteCommentInput,
@@ -53,6 +58,7 @@ export class CommentResolver {
     }
   }
 
+  @UseGuards(AuthorizationGuard)
   @Mutation('editComment')
   async editComment(
     @Args('editCommentInput') editCommentInput: EditCommentInput,

@@ -122,6 +122,11 @@ export class DeleteSavedListInput {
     createBy: string;
 }
 
+export class UpdateUsernameAliasInput {
+    username: string;
+    usernameAlias: string;
+}
+
 export class User {
     id: string;
     fullName: string;
@@ -129,6 +134,7 @@ export class User {
     username: string;
     followers?: Nullable<number>;
     createdTime: Date;
+    usernameAlias?: Nullable<string>;
 }
 
 export class ActionResponse {
@@ -224,6 +230,8 @@ export abstract class IMutation {
     abstract createUser(createUserInput?: Nullable<CreateUserInput>): Nullable<User> | Promise<Nullable<User>>;
 
     abstract updateUser(updateUserInput?: Nullable<UpdateUserInput>): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract updateUsernameAlias(updateUsernameAliasInput?: Nullable<UpdateUsernameAliasInput>): Nullable<User> | Promise<Nullable<User>>;
 
     abstract deleteUser(id: string): Nullable<ActionResponse> | Promise<Nullable<ActionResponse>>;
 
