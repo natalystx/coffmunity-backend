@@ -48,6 +48,7 @@ input RecipeDetailInput {
   temperature: Float!
   totalYield: Float!
   steps: [BrewInput]!
+  tds: Int
 }
 
 type RecipeDetail {
@@ -58,6 +59,7 @@ type RecipeDetail {
   temperature: Float!
   totalYield: Float!
   steps: [Brew]!
+  tds: Int
 }
 
 input CreateRecipeInput {

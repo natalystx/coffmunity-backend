@@ -27,6 +27,7 @@ type RecipeDetail = {
   temperature: number;
   totalYield: number;
   steps: Brew[];
+  tds?: number;
 };
 
 export type CreateRecipeInput = {
