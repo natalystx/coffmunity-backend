@@ -35,6 +35,7 @@ export class RecipeDetailInput {
     temperature: number;
     totalYield: number;
     steps: Nullable<BrewInput>[];
+    tds?: Nullable<number>;
 }
 
 export class CreateRecipeInput {
@@ -156,6 +157,7 @@ export class RecipeDetail {
     temperature: number;
     totalYield: number;
     steps: Nullable<Brew>[];
+    tds?: Nullable<number>;
 }
 
 export class BeanDetail {
