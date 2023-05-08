@@ -24,7 +24,7 @@ export class UserResolver {
     try {
       const result = await this.neo4jService
         .initQuery()
-        .match([node(NODE.USER)])
+        .match(node(NODE.USER, NODE.USER))
         .return(NODE.USER)
         .run();
 
@@ -107,12 +107,13 @@ export class UserResolver {
     try {
       await this.neo4jService
         .initQuery()
-        .match(
-          node(NODE.USER, NODE.USER, {
-            id: id,
-          }),
+        .raw(
+          `
+         MATCH (user:USER {id:"${id}"})-[r]-> (n) 
+         OPTIONAL MATCH (n)-[r2]->(user) 
+         DELETE r, r2, user;
+        `,
         )
-        .delete(NODE.USER)
         .run();
 
       return {
