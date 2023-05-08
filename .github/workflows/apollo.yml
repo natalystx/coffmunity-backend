@@ -1,43 +1,43 @@
-name: Check Schema
+# name: Check Schema
 
-on:
-  push:
-    branches:
-      - develop
+# on:
+#   push:
+#     branches:
+#       - production
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    environment:
-      name: apollo
+#     environment:
+#       name: apollo
 
-    env:
-      APOLLO_KEY: ${{ secrets.APOLLO_KEY }}
-      APOLLO_VCS_COMMIT: ${{ github.event.pull_request.head.sha }}
+#     env:
+#       APOLLO_KEY: ${{ secrets.APOLLO_KEY }}
+#       APOLLO_VCS_COMMIT: ${{ github.event.pull_request.head.sha }}
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v2
 
-      - name: Clear npm cache
-        run: npm cache clean --force
+#       - name: Clear npm cache
+#         run: npm cache clean --force
 
-      - name: Install Rover
-        run: |
-          curl -sSL https://rover.apollo.dev/nix/latest | sh
-          echo "$HOME/.rover/bin" >> $GITHUB_PATH
+#       - name: Install Rover
+#         run: |
+#           curl -sSL https://rover.apollo.dev/nix/latest | sh
+#           echo "$HOME/.rover/bin" >> $GITHUB_PATH
 
-      - name: Install Dependencies
-        run: npm install
+#       - name: Install Dependencies
+#         run: npm install
 
-      - name: Run check against prod
-        run: |
-          rover graph check --schema src/schema/schema.graphql coffmunity-graphql@main
+#       - name: Run check against prod
+#         run: |
+#           rover graph check --schema src/schema/schema.graphql coffmunity-graphql@main
 
-      - name: Update schema on Apollo Studio
-        run: |
-          rover subgraph publish --name coffmunity-graphql --schema src/schema/schema.graphql --routing-url https://main--coffmunity-graphql.apollographos.net/graphql coffmunity-graphql@main
+#       - name: Update schema on Apollo Studio
+#         run: |
+#           rover subgraph publish --name coffmunity-graphql --schema src/schema/schema.graphql --routing-url https://main--coffmunity-graphql.apollographos.net/graphql coffmunity-graphql@main
