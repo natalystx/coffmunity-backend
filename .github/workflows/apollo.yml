@@ -36,8 +36,8 @@ jobs:
 
       - name: Run check against prod
         run: |
-          rover graph check --schema src/schema/schema.graphql coffmunity-graphql@main
+          rover graph check --schema src/schema/schema.graphql coffmunity-backend-dev@main
 
       - name: Update schema on Apollo Studio cloud
         run: |
-          rover subgraph publish --name coffmunity-graphql --schema src/schema/schema.graphql --routing-url https://main--coffmunity-graphql.apollographos.net/graphql coffmunity-graphql@main
+          rover subgraph publish --name coffmunity-graphql --schema src/schema/schema.graphql --routing-url https://main--coffmunity-backend-dev.apollographos.net/graphql coffmunity-backend-dev@main
