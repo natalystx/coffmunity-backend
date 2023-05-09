@@ -25,6 +25,7 @@ import { SavedListModule } from './domains/saved-list/saved-list.module';
       typePaths: ['./**/*.graphql'],
       playground: true,
       cors: false,
+      introspection: true,
     }),
 
     UserModule,
