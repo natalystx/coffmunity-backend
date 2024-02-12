@@ -3,8 +3,7 @@ import admin from 'firebase-admin';
 export const firebaseApp = admin.initializeApp({
   credential: admin.credential.cert({
     projectId: 'coffmunity',
-    privateKey:
-      '-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC5xQgIW6iBBFlQ\n1qtMpu1EkcYI1yVZSV9JUSKU6LgHAm1/Kg45fLwYiX7blfmKEYvLCOf5Fz6GiHio\nBvdk52e9fG4fPFp9HEWlE/CCQm1q+PaU6FU6Qv9+XxtNa1k+D8L34lOTxI/sL1NN\nITld2Zq5B0Gcap6K5Pjqs7K/Jo3FpRm2upZ2TIbYHJDf0JeD2wRpz3kfqNIW+EWB\nYZ2Eqw9XVgeuJbnsJDfxHZ5PTaVpAkChhlHAYv/Hm4OozBtbEibsQakx1pvxHqAa\nzVY2wFgXkw4hF7i7avtwKK0oA0dOGV+zJ4SzXbxn1iierNxvpDTHnBAVnBGdELGF\nU7fN2do3AgMBAAECggEAK4GqBm8U8RZIJqcH2j1T3xW2x/Y/IICPCNgwHai9BKM8\naqY6S5tbX/G/nISsuvmuACB3V35qnc5TV6K+CMsrIBUGo1kapidbZjRbxN3yyzVA\nZpJc93aeaIW0mraT4XWGh1Bhm39S55ET1MH9se2XD1NUOeI8fDHw2+K2746DcHB5\nwVWOuO/47k0i3devsaokcjYOxkr70TJcJ01nnJqKuYlYZ44OQXl37tsePrysZwtX\nFmDZL7x/DtSSaAKh/bBTLktADmjhsqKpHUvuwwfFyVe127nGvXJiNndcvor08GIc\nLDch+nmk1pGYZc0+ADnCR455Bn3mnO7BF2MabvADRQKBgQD2hvRy0J2CQfhxq0Ay\nrzE4h6HsDAZ+W64w4k4rV1tuGHy/RxvN+7zN4UbKDVnR1gqi/nTox/5qh/Wvl+6F\nmxR1xLh99HeSJ3DKvmq3uHKqbMQNwA3Y8FVoYimGSbd123TJj6RFwTVVVuj55Xci\n1xH+U50MKJWaM3k32ONu2wMVdQKBgQDA6GpT8RhfvelTODlnM57T+a/oQXsURdLP\nd4dZ00ZALgsYmgkzAinchob1lcIag+bkiVMmXFTTGy03rCO2Yr2r1xOkSTkKlGzD\njn0WhGYqm903lGy/sMd4vMsAPbKUJ5PbOghkcFmq57A6ppoYV6sQhx1WMCS2XMSE\nVmmiCiP/ewKBgCU2yA3Q6gXwuXVHOaCtC4wSBWJhilVmt4vPjadDP50F+0bQkCTu\n/FhDynDTxRxE6EQkjzdYgVJJhc/k6m+mslb4xDTXQ3l/lKo2RlvHbx/E3W+J700x\nMmNYdhY8aIJVB3MpyM1y1f806GRYvDw5JRE0Q//C3JpzbLf+eI6SZwvFAoGAAIMd\ndSeYtvhcHDpz/JAohcuN6gHyf7VHwAFDPLvQ3e7BXMlb6OTCk7FPvmstXsCm5khv\nDhUErKLP1ewBFETi2Af0J2WCX0LRnxtLvbmQQ+CyD6m3ODMR9IIbz95aEQah390h\nlJKvykJfN2il1Ba3f428SDRMhKduZiOMmD+KpO0CgYAdyXayzzqgYAPbvLTnh20f\nwHQXrEevishQmkwztc8R2efPHUE3LMLrpRppjo/fkIBKI2g9tEvfkZrC/i3dHPO7\nSSqTppKkqcCbixMzRxvSBeZVCkaneXFVTj+91+M7k1/VOPk0lLoE+JB+u3box9UF\nwRfbF6Q4Ygyc+FLB5CEfYw==\n-----END PRIVATE KEY-----\n',
-    clientEmail: 'firebase-adminsdk-cay42@coffmunity.iam.gserviceaccount.com',
+    privateKey:'',     
+    clientEmail: '',
   }),
 });
